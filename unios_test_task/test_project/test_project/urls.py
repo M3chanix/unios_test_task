@@ -18,5 +18,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test_app/', include('test_app.urls'))
+    path('test_app/', include('test_app.urls')),
+    #path(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]

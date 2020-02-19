@@ -6,7 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from test_app.models import Device
 from test_app.serializers import DeviceSerializer
+from django.contrib.auth.decorators import login_required
 
+#@login_required
 def index(request):
     device_list = Device.objects.all()
     template = loader.get_template('test_app/table.html')
@@ -29,3 +31,11 @@ def device_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+def authentification(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+
