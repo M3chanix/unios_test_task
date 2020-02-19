@@ -1,0 +1,15 @@
+{% if device_list %}    
+    <table>
+	    <tr>
+		    <th>ID</th>
+		    <th>Title</th>
+		    <th>Code</th>
+		    <th>Time</th>
+            </tr>
+    {% for device in device_list %}    
+    <tr><th>{{ device.device_id }}</th><th>{{ device.device_title }}</th><th>{{ device.device_code }}</th><th>{{ device.device_time }}</th></tr>    
+    {% endfor %}    
+    </table>    
+{% else %}    
+    <p>No devices are available.</p>    
+{% endif %}  

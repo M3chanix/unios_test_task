@@ -9,7 +9,7 @@ from test_app.serializers import DeviceSerializer
 
 def index(request):
     device_list = Device.objects.all()
-    template = loader.get_template('test_app/index.html')
+    template = loader.get_template('test_app/table.html')
     context = {
         'device_list': device_list,
     }
