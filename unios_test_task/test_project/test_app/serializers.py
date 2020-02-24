@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from test_app.models import Device
+from test_app.models import State
 
-class DeviceSerializer(serializers.ModelSerializer):
+class StateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Device
-        fields = ['device_id', 'device_title', 'device_code', 'device_time']
+        model = State
+        fields = ['Id', 'Title', 'Code', 'Time']
 
     def create(self, validated_data):
-        return Device.objects.create(**validated_data)
+        return State.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.device_title = validated_data.get('title', instance.title)
-        instance.device_code = validated_data.get('code', instance.code)
+        instance.Title = validated_data.get('title', instance.title)
+        instance.Code = validated_data.get('code', instance.code)
         instance.save()
         return instance
 

@@ -1,13 +1,21 @@
-{% if device_list %}    
+<form action={% url 'state_list' %} method="post">
+	{% csrf_token %}
+	{{ form }}
+	<input type="submit" value="Add">
+</form>
+
+{% if state_list %}    
     <table>
 	    <tr>
 		    <th>ID</th>
 		    <th>Title</th>
 		    <th>Code</th>
 		    <th>Time</th>
+		    <th>Delete</th>
             </tr>
-    {% for device in device_list %}    
-    <tr><th>{{ device.device_id }}</th><th>{{ device.device_title }}</th><th>{{ device.device_code }}</th><th>{{ device.device_time }}</th></tr>    
+    {% for state in state_list %}
+    <tr><th>{{ state.Id }}</th><th>{{ state.Title }}</th><th>{{ state.Code }}</th><th>{{ state.Time }}</th><th><form action={% url 'delete' pk=state.Id %} method="post">{% csrf_token %}<input type="submit" value="Delete"></form></th></tr>
+
     {% endfor %}    
     </table>    
 {% else %}    
