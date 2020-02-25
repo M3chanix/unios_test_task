@@ -1,0 +1,22 @@
+<div class="basic">
+{% include "test_app/add_form.html" %}    
+</div>
+
+<table>
+		<tr>
+			<td>Title</td>
+			<td>Code</td>
+		</tr>
+
+		{{ formset.management_form }}
+		{% for form in formset %}
+		<tr><td>{{ form.Title }}</td><td>{{ form.Code }}</td>
+		<td><form action={% url 'delete' pk=form.Id.value %} method="post" id="delete">{% csrf_token %}
+		<input type="submit" value="Delete" form="delete">{{ formset.management_form }}</form></td>
+		<td><form action={% url 'edit' pk=form.Id.value %} method="post" id="edit">{% csrf_token %}
+		<input type="submit" value="Edit" form="edit">{{ formset.management_form }}</form></td>
+		<td><form action={% url 'save' pk=form.Id.value %} method="post" id="save">{% csrf_token %}
+		<input type="submit" value="Save" hidden="True" form="save">{{ formset.management_form }}</form></td>
+		</tr>
+		{% endfor %}
+</table>

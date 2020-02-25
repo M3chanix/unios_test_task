@@ -4,7 +4,7 @@ from test_app.models import State
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
         model = State
-        fields = ['Id', 'Title', 'Code', 'Time']
+        fields = ['Id', 'Title', 'Code']
 
     def create(self, validated_data):
         return State.objects.create(**validated_data)

@@ -1,0 +1,7 @@
+<h1>Add new state entry</h1>
+
+<form action="{% url 'state_list' %}" method="post">
+{% csrf_token %}
+	<input type="text" name="Title" id="Title"> <input type="text" name="Code" id="Code">
+	<input type="submit" value="Add">
+</form>

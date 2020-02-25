@@ -1,0 +1,7 @@
+<form method="post" action={% url 'edit' pk='1' %}>
+	{% csrf_token %}
+    <table>
+        {{ formset }}
+    </table>
+    <input type="submit" value="Edit">
+</form>

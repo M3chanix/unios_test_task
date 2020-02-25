@@ -8,17 +8,23 @@ from test_app.models import State
 from test_app.serializers import StateSerializer
 from django.contrib.auth.decorators import login_required
 from test_app.forms import StateForm
+from django.forms import modelformset_factory, TextInput
+from django.contrib.auth import authenticate
 
-#@login_required
 def index(request):
-    state_list = State.objects.all()
-    template = loader.get_template('test_app/table.html')
-    form = StateForm()
+    #state_list = State.objects.all()
+    template = loader.get_template('test_app/formset.html')
+    StateFormSet = modelformset_factory(
+            State, form=StateForm, extra=0)
+    formset = StateFormSet()
+    #formset.full_clean()
+    #print(formset.is_valid())
+    #print(formset.is_bound)
     context = {
-        'state_list': state_list,
-        'form': form
+        'formset': formset
     }
-    return HttpResponse(template.render(context, request))
+    # return HttpResponse(template.render(context, request))
+    return render(request, 'test_app/formset.html', {'formset': formset})
 
 @csrf_exempt
 def state_list(request):
@@ -37,7 +43,22 @@ def state_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
-def change(request, pk):
+@login_required
+def edit(request, pk):
+    StateFormSet = modelformset_factory(    
+            State, form=StateForm,    
+            extra=0)
+    data = request.POST
+    serializer = StateSerializer(data=data, many=True)
+    if serializer.is_valid():
+        formset = StateFormSet(serializer.validated_data)
+    #if formset.is_valid():
+        #cleanformset = formset.save(commit = False)
+        #print(cleanformset)
+        return render(request, 'test_app/formset.html', {'formset': formset})
+
+
+def save(request, pk):
     try:
         state = State.objects.get(pk=pk)
     except State.DoesNotExist:
@@ -50,7 +71,8 @@ def change(request, pk):
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
 
-    
+
+@login_required
 def delete(request, pk):
     try:
         state = State.objects.get(pk=pk)
@@ -60,10 +82,14 @@ def delete(request, pk):
     return HttpResponse(status=204)
 
 
-def authentification(request):
-    username = request.POST['username']
-    password = request.POST['password']
+def auth(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
+    else:
+        return HttpResponse("Invalid login-password pair.")
 
+def login(request):
+    return render(request, "test_app/login_form.html")
